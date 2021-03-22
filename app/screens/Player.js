@@ -1,9 +1,14 @@
-import React from 'react'
+import React from 'react';
+
+import Slider from "@react-native-community/slider";
+import Moment from "react-moment";
 import { StyleSheet, Text, View, Image, SafeAreaView, TouchableOpacity } from "react-native";
 
 import { FontAwesome5 } from "@expo/vector-icons";
+import { render } from 'react-dom';
 
 const Player = () => {
+    
     state = {
         trackLength: 300,
         timeElapsed: "0:00",
@@ -14,6 +19,8 @@ const Player = () => {
         this.setState({ timeElapsed: Moment.utc(seconds * 1000).format("m:ss") });
         this.setState({ timeRemaining: Moment.utc((this.state.trackLength - seconds) * 1000).format("m:ss") });
     };
+    
+
     return (
         <SafeAreaView style={styles.container}>
         <View style={{ alignItems: "center" }}>
@@ -34,6 +41,21 @@ const Player = () => {
                         <Text style={[styles.text, { fontSize: 16, marginTop: 8 }]}>MGMT</Text>
                     </View>
                 </View>
+                <View style={{ margin: 32 }}>
+                    <Slider
+                        minimumValue={0}
+                        maximumValue={this.state.trackLength}
+                        trackStyle={styles.track}
+                        thumbStyle={styles.thumb}
+                        minimumTrackTintColor="#93A8B3"
+                        onValueChange={seconds => this.changeTime(seconds)}
+                    ></Slider>
+                    <View style={{ marginTop: 7, flexDirection: "row", justifyContent: "space-between" }}>
+                        <Text style={[styles.textLight, styles.timeStamp]}>{this.state.timeElapsed}</Text>
+                        <Text style={[styles.textLight, styles.timeStamp]}>{this.state.timeRemaining}</Text>
+                    </View>
+                </View>
+
                 <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 16 }}>
                     <TouchableOpacity>
                         <FontAwesome5 name="backward" size={32} color="#93A8B3"></FontAwesome5>
@@ -53,13 +75,13 @@ const Player = () => {
 
             </SafeAreaView>
 
-    )
-}
+    );
+    }
 
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 50,
+        marginTop : 40,
         flex: 1,
         backgroundColor: "#FFFFFF"
     },
@@ -67,7 +89,6 @@ const styles = StyleSheet.create({
         color: "#B6B7BF"
     },
     text: {
-   
         color: "#8E97A6"
     },
     textDark: {
